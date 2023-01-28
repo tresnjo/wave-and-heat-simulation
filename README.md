@@ -34,3 +34,11 @@ $$u^{m+1}_{i,j} = u^{m}_{i,j} + \Delta t c^2 \left(\frac{u^{m}_{i+1,j}-2u^{m}_{i
 Which is precisely what is utilized in the simulation. 
 
 ## How the code works
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/121384892/215294698-77c83a8f-ed9a-4985-8e77-0414350c6bfc.png" width="500" height="400">
+    
+    This is an image from the simulation where the initial conditions for the heat equation is given by u(x,y,0) = 3-x^2-y^2 in a 
+    10x10 room with boundary conditions given by 0 degrees across all walls.
+</p>
+
