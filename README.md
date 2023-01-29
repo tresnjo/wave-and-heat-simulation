@@ -44,7 +44,7 @@ In order to use the code, use the following image as a template.
     The BC[i] corresponds to the i:th boundary condition in correspondance to the image above. rect[i] stands for the $i:th$ coordinate where for i=0,1 is used for x-coordinates and for i=2,3 is used for the y-coordinates. 
 </p>
 
- Below is an image from the code itself.
+Below is an image from the code itself:
 
 <p align="center">
     <img src="https://user-images.githubusercontent.com/121384892/215294698-77c83a8f-ed9a-4985-8e77-0414350c6bfc.png" width="500" height="400">
