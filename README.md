@@ -34,6 +34,10 @@ $$u^{m+1}_{i,j} = u^{m}_{i,j} + \Delta t c^2 \left(\frac{u^{m}_{i+1,j}-2u^{m}_{i
 
 Which is precisely what is utilized in the simulation.  Notice that in the code, $\Delta x$ and $\Delta y$ are assumed to be the same for simplicity. 
 
+# Simulation of the Wave Equation
+
+This part is not done yet!
+
 ## User instructions
 
 In order to use the code, use the following image as a template.
