@@ -5,17 +5,17 @@ from matplotlib import cm
 import matplotlib as mpl
 
 def f(X,Y): # u(x,y,0) = f(x,y,0)
-    return X**2+Y**2
+    return X**2-np.arctan(X*Y)
 
 def g(X,Y): # u_t(x,y,0) = g(x,y,0)
-    return -np.exp(Y/1000)
+    return X/10000
 
-def laplacian(arr, row,col, dx ): # used to find initial condition for Wave eq.
+def laplacian(arr, row,col, dx ): # Laplacian in terms of FDM
     return (arr[row + 1, col]
                             + arr[row - 1, col] + arr[row, col + 1]
                             + arr[row, col - 1]- 4*arr[row,col])/(dx**2)
 
-def simulation_pdes(rect,hs,BC, c, frames, eq, eps = 1e-10):
+def simulation_pdes(rect,hs,BC, c, frames, eq):
 
     """ Simulation of the heat and wave equation on a
     2D rectangular grid using the Finite Difference Method """
@@ -25,10 +25,11 @@ def simulation_pdes(rect,hs,BC, c, frames, eq, eps = 1e-10):
 
     # Initial Conditions
     Z_init = f(X,Y) # u(x,y,0) = f(x,y,0)
-    Z_init_2 = f(X,Y)
+    Z_0 = f(X,Y)
     Z_dot_init = g(X,Y) # u_t(x,y,0) = g(x,y,0)
     zs = []
 
+    # Max/min for colorbar
     zmax = max(Z_init.max(), BC[0], BC[1], BC[2], BC[3])
     zmin = min(Z_init.min(), BC[0], BC[1], BC[2], BC[3])
 
@@ -42,8 +43,8 @@ def simulation_pdes(rect,hs,BC, c, frames, eq, eps = 1e-10):
     # Figure settings
     fig = plt.figure()
     ax = plt.axes(projection='3d')
-    ax.axes.set_xlim3d(rect[0] + eps, rect[1] - eps)
-    ax.axes.set_ylim3d(rect[2] + eps, rect[3] - eps)
+    ax.axes.set_xlim3d(rect[0], rect[1])
+    ax.axes.set_ylim3d(rect[2], rect[3])
     ax.axes.set_zlim3d(zmin, zmax)
     plt.rcParams['mathtext.fontset'] = 'stix'
     plt.rcParams['font.family'] = 'STIXGeneral'
@@ -85,19 +86,19 @@ def simulation_pdes(rect,hs,BC, c, frames, eq, eps = 1e-10):
 
     # Finite Difference Method
     if eq == 'Wave':
+
+        # Creating first initial condition
         for row in range(1, hs[0] - 1):
             for col in range(1, hs[1] - 1):
-                Z_init_2[row,col] = Z_init_2[row,col] - 2 * laplacian(Z_dot_init,row,col, dx) + 1/2 * c ** 2 * dt ** 2 / (
-                    dx) ** 2 * (Z_init_2[row+1, col] - 4 * Z_init_2[row, col]
-                                + Z_init_2[row-1, col] + Z_init_2[row, col+1]
-                                + Z_init_2[row, col-1])
+                Z_0[row,col] = Z_0[row,col] - 2 * laplacian(Z_dot_init,row,col, dx) + \
+                                    1/2 * c ** 2 * dt ** 2 * laplacian(Z_0, row, col, dx)
 
-        zs.append(Z_init_2)
+        zs.append(Z_0)
         zs.append(Z_init)
 
         for iteration in range(2,frames):
-
             surf.remove()
+
             # Creating temporary matrix
             Z_temp = a = np.zeros((hs[0], hs[1]))
             Z_temp[0] = np.ones(len(Z_temp[0])) * BC[0]
@@ -107,34 +108,23 @@ def simulation_pdes(rect,hs,BC, c, frames, eq, eps = 1e-10):
 
             for row in range(1, hs[0]-1):
                 for col in range(1,hs[1]-1):
-                    Z_temp[row,col] += 2 * zs[iteration - 1][row, col] - zs[iteration - 2][row, col] + c ** 2 * dt ** 2 / (
-                            dx**2) * (zs[iteration - 1][row + 1, col] - 4 * zs[iteration - 1][row, col]
-                                        + zs[iteration - 1][row - 1, col] + zs[iteration - 1][row, col + 1]
-                                        + zs[iteration - 1][row, col - 1])
+                    Z_temp[row,col] += 2 * zs[iteration - 1][row, col] - zs[iteration - 2][row, col] + \
+                                       c ** 2 * dt ** 2 * laplacian(zs[iteration-1], row, col, dx)
 
             zs.append(Z_temp)
+            # Plotting surface with slight pause
             surf = ax.plot_surface(X, Y, zs[iteration-2], alpha = 1, cmap ="magma", vmin = zmin, vmax = zmax)
             plt.pause(dt)
 
     if eq == 'Heat':
 
         for iteration in range(frames):
-
             surf.remove()
             for row in range(1, hs[0]-1):
                 for col in range(1,hs[1]-1):
-                    Z_init[row,col] = Z_init[row,col] + c**2 * dt / (dx)**2  *(Z_init[row+1,col] - 4*Z_init[row,col]
-                                                   + Z_init[row-1,col] + Z_init[row,col+1]
-                                                   + Z_init[row,col-1])
-
+                    Z_init[row,col] = Z_init[row,col] + c**2 * dt * laplacian(Z_init, row, col, dx)
             # Plotting surface with slight pause
             surf = ax.plot_surface(X, Y, Z_init, alpha = 1, cmap =plt.cm.jet, vmin = zmin, vmax = zmax)
             plt.pause(dt)
 
-simulation_pdes(rect = [-1,2,-5,1], hs = [40,40], BC = [0,0,0,0], c = 5, frames = 1000, eq = 'Wave')
-
-
-
-
-
-
+simulation_pdes(rect = [-1,1,-1,1], hs = [50,50], BC = [0,0,0,0], c = 2, frames = 1000, eq = 'Heat')
