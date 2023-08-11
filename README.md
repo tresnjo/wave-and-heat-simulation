@@ -25,11 +25,11 @@ In the 2D case, we can discretize our spatial coordinates with increments of $\D
 
 Let $u^m_{i,j}$ be the temperature $u$ at position $i,j$ in our discretization at iteration ("time") $m$. Substituting the ideas developed above into the heat equation, we get:
 
-$$\frac{u^{m+1}_{i,j}-u^{m}_{i,j}}{\Delta t} = c^2 \left(\frac{u^{m}_{i+1,j}-2u^{m}_{i,j}+u^{m}_{i-1,j}}{\Delta x^2} + \frac{u^{m}_{i,j+1}-2u^{m}_{i,j}+u^{m}_{i,j-1}}{\Delta y^2}\right) $$
+$$\frac{u^{m+1}_{i,j}-u^m_{i,j}}{\Delta t} = c^2 \left(\frac{u^{m}_{i+1,j}-2u^m_{i,j}+u^m_{i-1,j}}{\Delta x^2} + \frac{u^m_{i,j+1}-2u^{m}_{i,j}+u^{m}_{i,j-1}}{\Delta y^2}\right) $$
 
 For which we the ncan solve the temperature at position $i,j$ for time $m+1$ as:
 
-$$u^{m+1}_{i,j} = u^{m}_{i,j} + \Delta t c^2 \left(\frac{u^{m}_{i+1,j}-2u^{m}_{i,j}+u^{m}_{i-1,j}}{\Delta x^2} + \frac{u^{m}_{i,j+1}-2u^{m}_{i,j}+u^{m}_{i,j-1}}{\Delta y^2}\right) $$
+$$u_{i,j}^{m+1} = u^m_{i,j} + \Delta t c^2 \left(\frac{u^{m}_{i+1,j}-2u_{i,j}^m+u_{i-1,j}^m}{\Delta x^2} + \frac{u^{m}_{i,j+1}-2u^{m}_{i,j}+u^{m}_{i,j-1}}{\Delta y^2}\right) $$
 
 
 Which is precisely what is utilized in the simulation.  Notice that in the code, $\Delta x$ and $\Delta y$ are assumed to be the same for simplicity. 
