@@ -25,11 +25,15 @@ In the 2D case, we can discretize our spatial coordinates with increments of $\D
 
 Let $u^m_{i,j}$ be the temperature $u$ at position $i,j$ in our discretization at iteration ("time") $m$. Substituting the ideas developed above into the heat equation, we get:
 
-$$\frac{u^{m+1}_{i,j}-u^m_{i,j}}{\Delta t} = c^2 \left(\frac{u^{m}_{i+1,j}-2u^m_{i,j}+u^m_{i-1,j}}{\Delta x^2} + \frac{u^m_{i,j+1}-2u^{m}_{i,j}+u^{m}_{i,j-1}}{\Delta y^2}\right) $$
+$$
+\frac{u^{m+1}_{i,j}-u^m_{i,j}}{\Delta t} = c^2 \left(\frac{u^{m}_{i+1,j}-2u^m_{i,j}+u^m_{i-1,j}}{\Delta x^2} + \frac{u^m_{i,j+1}-2u^{m}_{i,j}+u^{m}_{i,j-1}}{\Delta y^2}\right)
+$$
 
 For which we the ncan solve the temperature at position $i,j$ for time $m+1$ as:
 
-$$u_{i,j}^{m+1} = u^m_{i,j} + \Delta t c^2 \left(\frac{u^{m}_{i+1,j}-2u_{i,j}^m+u_{i-1,j}^m}{\Delta x^2} + \frac{u^{m}_{i,j+1}-2u^{m}_{i,j}+u^{m}_{i,j-1}}{\Delta y^2}\right) $$
+$$
+u_{i,j}^{m+1} = u^m_{i,j} + \Delta t c^2 \left(\frac{u^{m}_{i+1,j}-2u_{i,j}^m+u_{i-1,j}^m}{\Delta x^2} + \frac{u^{m}_{i,j+1}-2u^{m}_{i,j}+u^{m}_{i,j-1}}{\Delta y^2}\right) 
+$$
 
 
 Which is precisely what is utilized in the simulation.  Notice that in the code, $\Delta x$ and $\Delta y$ are assumed to be the same for simplicity. 
@@ -40,7 +44,7 @@ This part is not done yet!
 
 ## User instructions
 
-In order to use the code, use the following image as a template.
+In order to use the code, use the following image as a reference.
 
 <p align="center">
     <img src="https://user-images.githubusercontent.com/121384892/215316805-f38d2595-0808-485a-b122-0011875258bb.png" width="500" height="400">
@@ -48,7 +52,7 @@ In order to use the code, use the following image as a template.
     The BC[i] corresponds to the i:th boundary condition in correspondance to the image above. rect[i] stands for the $i:th$ coordinate where for i=0,1 is used for x-coordinates and for i=2,3 is used for the y-coordinates. 
 </p>
 
-Below is an image from the code itself:
+Below is an image of the produced result from the code itself:
 
 <p align="center">
     <img src="https://user-images.githubusercontent.com/121384892/215294698-77c83a8f-ed9a-4985-8e77-0414350c6bfc.png" width="500" height="400">
