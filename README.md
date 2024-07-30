@@ -29,7 +29,7 @@ Let $u^m_{i,j}$ be the temperature $u$ at position $i,j$ in our discretization a
 \frac{u^{m+1}_{i,j}-u^m_{i,j}}{\Delta t} = c^2 \left(\frac{u^{m}_{i+1,j}-2u^{m}_{i,j}+u^m_{i-1,j}}{\Delta x^2} + \frac{u^m_{i,j+1}-2u^{m}_{i,j}+u^{m}_{i,j-1}}{\Delta y^2}\right)
 ```
 
-For which we the ncan solve the temperature at position $i,j$ for time $m+1$ as:
+For which we then can solve the temperature at position $i,j$ for time $m+1$ as:
 ```math
 u_{i,j}^{m+1} = u^m_{i,j} + \Delta t c^2 \left(\frac{u^{m}_{i+1,j}-2u_{i,j}^m+u_{i-1,j}^m}{\Delta x^2} + \frac{u^{m}_{i,j+1}-2u^{m}_{i,j}+u^{m}_{i,j-1}}{\Delta y^2}\right) $$
 ```
@@ -38,7 +38,22 @@ Which is precisely what is utilized in the simulation.  Notice that in the code,
 
 # Simulation of the Wave Equation
 
-This part is not done yet!
+The wave equation is a partial differential equation that describes how waves propagate through a medium. The 2D wave equation is similiar to the heat equation, but possesses a second order temporal dependency.
+
+## Finite Difference Method for the Wave Equation
+
+The procedure is similiar to what we had previously, but this time the second temporal dependency in the left hand side yields
+
+```math
+\frac{u^{m+1}_{i,j}-2u^m_{i,j}+u^{m-1}_{i,j}}{\Delta t^2} = c^2 \left(\frac{u^{m}_{i+1,j}-2u^{m}_{i,j}+u^m_{i-1,j}}{\Delta x^2} + \frac{u^m_{i,j+1}-2u^{m}_{i,j}+u^{m}_{i,j-1}}{\Delta y^2}\right)
+```
+
+which solving for $\( u^{m+1}_{i,j} \)$ gives us
+
+```math
+u^{m+1}_{i,j} = 2u^m_{i,j} - u^{m-1}_{i,j} + \Delta t^2 c^2 \left( \frac{u^{m}_{i+1,j} - 2u^m_{i,j} + u^m_{i-1,j}}{\Delta x^2} + \frac{u^m_{i,j+1} - 2u^m_{i,j} + u^m_{i,j-1}}{\Delta y^2} \right).
+```
+The expression for $u$ at the new timestep $m+1$ is therefore dependent on the two timesteps $m$ and $m-1$. 
 
 ## User instructions
 
